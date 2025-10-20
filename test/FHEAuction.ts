@@ -40,6 +40,10 @@ describe("FHEAuction", function () {
     let tx = await auction.connect(signers.alice).createAuction("Test Auction", 100);
     await tx.wait();
 
+    const info = await auction.getAuctionInfo(1);
+    expect(info[0]).to.eq("Test Auction");
+    expect(info[1]).to.eq(100);
+
     // Alice bids 150
     let enc150 = await fhevm.createEncryptedInput(address, signers.alice.address).add32(150).encrypt();
     tx = await auction.connect(signers.alice).bid(1, enc150.handles[0], enc150.inputProof);
