@@ -82,7 +82,8 @@
     "chain": "hardhat node --network hardhat --no-deploy",
     "deploy:localhost": "hardhat deploy --network localhost",
     "deploy:sepolia": "hardhat deploy --network sepolia",
-    "verify:sepolia": "hardhat verify --network sepolia"
+    "verify:sepolia": "hardhat verify --network sepolia",
+    "sync-abi": "ts-node scripts/sync-abi.ts"
   },
   "overrides": {
     "ws@>=7.0.0 <7.5.10": ">=7.5.10",
@@ -93,8 +94,7 @@
     "micromatch@<4.0.8": ">=4.0.8",
     "elliptic@<6.6.0": ">=6.6.0",
     "elliptic@<6.5.6": ">=6.5.6",
-    "undici@>=6.0.0 <6.21.1": ">=6.21.1",
-    "undici@>=4.5.0 <5.28.5": ">=5.28.5",
+    "undici": "6.21.1",
     "elliptic@<=6.6.0": ">=6.6.1",
     "tar-fs@>=2.0.0 <2.1.2": ">=2.1.2",
     "axios@>=1.0.0 <1.8.2": ">=1.8.2",

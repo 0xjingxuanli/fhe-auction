@@ -9,9 +9,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     from: deployer,
     log: true,
   });
-
   console.log(`FHECounter contract: `, deployedFHECounter.address);
+
+  const deployedFHEAuction = await deploy("FHEAuction", {
+    from: deployer,
+    log: true,
+  });
+  console.log(`FHEAuction contract: `, deployedFHEAuction.address);
 };
 export default func;
-func.id = "deploy_fheCounter"; // id required to prevent reexecution
-func.tags = ["FHECounter"];
+func.id = "deploy_fheContracts"; // id required to prevent reexecution
+func.tags = ["FHECounter", "FHEAuction"];
