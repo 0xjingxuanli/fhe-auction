@@ -10,6 +10,7 @@ import {SepoliaConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
 contract FHEAuction is SepoliaConfig {
     struct Auction {
         string name; // public metadata
+        uint32 startPricePlain; // clear starting price for UI/logic
         euint32 startPrice; // encrypted starting price
         euint32 highestBid; // encrypted highest bid
         eaddress highestBidder; // encrypted highest bidder
@@ -28,6 +29,8 @@ contract FHEAuction is SepoliaConfig {
     /// @param name The auction name
     /// @param startPrice The starting price in clear (will be trivially encrypted on-chain)
     function createAuction(string calldata name, uint32 startPrice) external returns (uint256 id) {
+        require(bytes(name).length > 0, "INVALID_NAME");
+
         id = ++auctionCount;
 
         euint32 encStart = FHE.asEuint32(startPrice);
@@ -37,6 +40,7 @@ contract FHEAuction is SepoliaConfig {
 
         auctions[id] = Auction({
             name: name,
+            startPricePlain: startPrice,
             startPrice: encStart,
             highestBid: encHighest,
             highestBidder: encBidder,
@@ -56,10 +60,14 @@ contract FHEAuction is SepoliaConfig {
 
     /// @notice Returns public info for an auction (no sensitive data)
     /// @dev Does not use msg.sender inside view methods
-    function getAuctionInfo(uint256 id) external view returns (string memory name, uint256 createdAt) {
+    function getAuctionInfo(uint256 id)
+        external
+        view
+        returns (string memory name, uint32 startPrice, uint256 createdAt)
+    {
         require(auctions[id].created, "AUCTION_NOT_FOUND");
         Auction storage a = auctions[id];
-        return (a.name, a.createdAt);
+        return (a.name, a.startPricePlain, a.createdAt);
     }
 
     /// @notice Returns the encrypted highest bidder address handle for an auction
@@ -74,6 +82,12 @@ contract FHEAuction is SepoliaConfig {
     function getEncryptedHighestBid(uint256 id) external view returns (euint32) {
         require(auctions[id].created, "AUCTION_NOT_FOUND");
         return auctions[id].highestBid;
+    }
+
+    /// @notice Returns the encrypted timestamp of the last successful bid
+    function getEncryptedLastBidTime(uint256 id) external view returns (euint64) {
+        require(auctions[id].created, "AUCTION_NOT_FOUND");
+        return auctions[id].lastBidTime;
     }
 
     /// @notice Submit an encrypted bid; returns an encrypted boolean indicating if it became highest
