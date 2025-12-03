@@ -1,6 +1,6 @@
 // FHEAuction contract deployed on Sepolia
 // Update the address after deploying with Hardhat
-export const CONTRACT_ADDRESS = '0x42fcB416ce0DB4c7C4b811699d93657a89Ba768f';
+export const CONTRACT_ADDRESS = '0x07Cb143dacE0BA19BacbC72C7212c3b73058c6Fb';
 
 // Generated ABI copied from deployments/sepolia/FHEAuction.json
 export const CONTRACT_ABI = [

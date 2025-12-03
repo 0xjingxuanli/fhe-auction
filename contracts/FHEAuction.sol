@@ -2,12 +2,12 @@
 pragma solidity ^0.8.24;
 
 import {FHE, euint32, euint64, eaddress, ebool, externalEuint32} from "@fhevm/solidity/lib/FHE.sol";
-import {SepoliaConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
+import {ZamaEthereumConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
 
 /// @title FHE-based sealed-bid auction manager
 /// @notice Allows creating auctions and bidding using encrypted values
 /// @dev All sensitive state (highest bid, bidder, last bid time) is stored encrypted.
-contract FHEAuction is SepoliaConfig {
+contract FHEAuction is ZamaEthereumConfig {
     struct Auction {
         string name; // public metadata
         uint32 startPricePlain; // clear starting price for UI/logic
